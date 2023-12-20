@@ -42,5 +42,6 @@ cur.close()
 
 write_pandas(conn, df, "hourly_data", auto_create_table=True)
 
+# Load table of hourly_data to snowflake and create daily_data , monthly_data , yearly_data tables in snowflake and do analysis
 
 
