@@ -2,6 +2,8 @@ import requests
 import pandas as pd
 import snowflake.connector
 from snowflake.connector.pandas_tools import write_pandas
+import os
+from dotenv import load_dotenv
 
 # Extract - API
 res = requests.get("https://archive-api.open-meteo.com/v1/archive?latitude=59.3294&longitude=18.0687&start_date=2010-01-01&end_date=2023-12-11&hourly=temperature_2m,apparent_temperature,precipitation,rain,snowfall,pressure_msl,surface_pressure,wind_speed_10m")
@@ -22,12 +24,14 @@ df=df[['time', 'temperature', 'rain', 'snowfall', 'wind_speed', 'year', 'month',
 
 
 # Load - to Snowflake
+load_dotenv("snowflake.env")
+
 conn = snowflake.connector.connect(
-    user="SABAFOROUTAN",
-    password="Sabaf34015041",
-    account="BMTZZKB-CB67696",
-    database="WEATHER_ANALYSIS",
-    schema="WEATHER_ANALYSIS"
+user=os.getenv("SNOWFLAKE_USER"),
+password=os.getenv("SNOWFLAKE_PASSWORD"),
+account=os.getenv("SNOWFLAKE_ACCOUNT"),
+database=os.getenv("SNOWFLAKE_DaTABASE"),
+schema=os.getenv("SNOWFLAKE_SCHEMA")
 )
 
 # Drop table if exists
